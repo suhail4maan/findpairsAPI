@@ -5,7 +5,7 @@ using namespace std;
 
 vector<vector<int>> findPairs(vector<int> numbers , int target){
 
-      vector<vector<int> ans;
+      vector<vector<int>> ans;
       unordered_map<int , int> map;
        
        for(int i=0 ; i<numbers.size() ; i++){
@@ -13,7 +13,7 @@ vector<vector<int>> findPairs(vector<int> numbers , int target){
             if(m.find(temp) != m.end()){
                 ans.push_back({map[temp] , i});  
             }
-            map[temp[i]]=i;
+            map[numbers[i]]=i;
        }
        return ans;
 }
@@ -27,10 +27,19 @@ int main()
         cout << "wrong input  " << endl;
         return 1;
     }
-    vector<int> numbers = requestData["numbers"].get<vector<int>>();
-    int target = requestData["target"];
+    vector<int> numbers;
+    int target;
+    
+    // Validate that numbers is an array of integers
+    try {
+        numbers = requestData["numbers"].get<vector<int>>();
+        target = requestData["target"];
+    } catch (...) {
+        cout << "Invalid input: 'numbers' should be an array of integers and 'target' an integer." << endl;
+        return 1;
+    }
     vector<vector<int>> solutions = findPairs(numbers, target);
     requestData["solutions"] = solutions;
 
-    cout<<requestData.solutions<<endl;
+   cout << requestData.dump(4) << endl;
 }
